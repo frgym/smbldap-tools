@@ -1,0 +1,98 @@
+https://help.ubuntu.com/lts/serverguide/samba-ldap.html.en#samba-ldap-openldap-configuration
+
+apt install samba smbldap-tools
+
+zcat /usr/share/doc/samba/examples/LDAP/samba.ldif.gz | sudo ldapadd -Q -Y EXTERNAL -H ldapi:///
+
+touch samba_indices.ldif
+pass these content in samba_indices.ldif
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcDbIndex
+olcDbIndex: objectClass eq
+olcDbIndex: uidNumber,gidNumber eq
+olcDbIndex: loginShell eq
+olcDbIndex: uid,cn eq,sub
+olcDbIndex: memberUid eq,sub
+olcDbIndex: member,uniqueMember eq
+olcDbIndex: sambaSID eq
+olcDbIndex: sambaPrimaryGroupSID eq
+olcDbIndex: sambaGroupType eq
+olcDbIndex: sambaSIDList eq
+olcDbIndex: sambaDomainName eq
+olcDbIndex: default sub,eq
+
+sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f samba_indices.ldif
+
+check with: sudo ldapsearch -Q -LLL -Y EXTERNAL -H \
+ldapi:/// -b cn=config olcDatabase={1}mdb olcDbIndex
+
+------------------
+
+smbldap-config
+
+http://smbldap-addons.sourceforge.net/required.html
+
+enter
+enter
+workgroup name [F..SAMBA]> enter
+netbios name [] > smbldap2 – enter
+enter
+enter
+enter
+enter
+enter
+enter
+enter
+ldap suffix [] > dc=fr....-...,dc=dk - enter
+ldap group suffix [] > ou=Groups – enter
+ldap user suffix [] > ou=Users – enter
+ldap machine suffix [] > ou=Computers – enter
+Idmap suffix [] > ou=Idmap – enter
+[sambaDomainName=F..SAMBA] enter
+Ldap master server [127.0.0.1] enter
+Port [389] enter
+ldap master bind dn [] > cn=admin,dc=fr....-...,dc=dk – enter
+password [] > 4y..... – enter
+slave 127.0.0.1 – enter
+port [389] – enter
+slave bind [] > cn=admin,dc=fr....-...,dc=dk – enter
+slave password – 4y........ – enter
+tls support [0] enter
+SID for domain F..SAMBA [S-1-5-21-3043408297-3851436572-1239339359] > enter
+Unix password encryption – enter
+default user gidNumber [513] > enter
+default computer gidNumber [515] > enter
+default login shell [/bin/bash] > enter
+default skeleton directory [/etc/skel] > enter
+default domain name to append to mail address [] > fr....-....dk – enter
+
+sudo smbldap-populate -g 10000 -u 10000 -r 10000
+
+vim /etc/samba/smb.conf
+
+# LDAP Settings
+   passdb backend = ldapsam:ldap://localhost
+   ldap suffix = dc=fr....-....dk,dc=dk
+   ldap user suffix = ou=Users
+   ldap group suffix = ou=Groups
+   ldap machine suffix = ou=Computers
+   ldap idmap suffix = ou=Idmap
+   ldap admin dn = cn=admin,dc=fr....-...,dc=dk
+
+smbpasswd -W
+
+4y.....
+4y......
+
+apt install libnss-ldap
+ldap://10.0.0.9
+
+Config nogle småting jeg ikke fik skrevet ned
+
+auth-client-config -t nss -p lac_ldap
+
+restart samba: systemctl restart smbd.service nmbd.service
+
+
