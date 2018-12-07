@@ -1,0 +1,23 @@
+https://help.ubuntu.com/lts/serverguide/openldap-server.html.en
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-openldap-and-phpldapadmin-on-ubuntu-16-04
+
+-------
+
+add-apt-repository universe
+apt-get update
+apt-get upgrade
+
+-------
+
+apt install slapd ldap-utils
+Passwd: 4y......
+dpkg-reconfigure slapd
+No
+fr....-....dk
+fr....-....dk
+4y......
+4y.......
+MDB
+yes
+
+-------
