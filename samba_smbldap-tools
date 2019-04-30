@@ -4,7 +4,7 @@ apt install samba smbldap-tools
 
 zcat /usr/share/doc/samba/examples/LDAP/samba.ldif.gz | sudo ldapadd -Q -Y EXTERNAL -H ldapi:///
 
-touch samba_indices.ldif
+touch /etc/samba/samba_indices.ldif
 pass these content in samba_indices.ldif
 
 dn: olcDatabase={1}mdb,cn=config
