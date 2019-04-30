@@ -74,7 +74,7 @@ vim /etc/samba/smb.conf
 
 # LDAP Settings
    passdb backend = ldapsam:ldap://localhost
-   ldap suffix = dc=fr....-....dk,dc=dk
+   ldap suffix = dc=fr....-...,dc=dk
    ldap user suffix = ou=Users
    ldap group suffix = ou=Groups
    ldap machine suffix = ou=Computers
