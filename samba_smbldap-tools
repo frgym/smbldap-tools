@@ -72,6 +72,8 @@ sudo smbldap-populate -g 10000 -u 10000 -r 10000
 
 vim /etc/samba/smb.conf
 
+Gem det næste under (Global settings) 
+
 # LDAP Settings
    passdb backend = ldapsam:ldap://localhost
    ldap suffix = dc=fr....-...,dc=dk
