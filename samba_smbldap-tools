@@ -90,8 +90,14 @@ smbpasswd -W
 
 apt install libnss-ldap
 ldap://10.0.0.9
+dc=frhavn-gym,dc=dk
+3
+yes
+no
+cn=admin,dc=frhavn-gym,dc=dk
+4y......
 
-Config nogle småting jeg ikke fik skrevet ned
+
 
 auth-client-config -t nss -p lac_ldap
 
